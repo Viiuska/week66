@@ -94,11 +94,6 @@ const buildChart = async () => {
     type: "line",
     colors: ["#eb5146"],
     high: 450,
-    lineOptions: {
-      colors: ["#eb5146"],
-      height: 450,
-      label: years
-    }
   });
 };
 
