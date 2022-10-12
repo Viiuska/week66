@@ -70,31 +70,40 @@ const getData = async () => {
   return data;
 };
 
-const buildChart = async () => {
+const buildChart = async (check, kunta) => {
+  let charData = {};
+  if (check === "false") {
   const data = await getData();
   const years = Object.values(data.dimension.Vuosi.category.label);
-  const alue = Object.values(data.dimension.Alue); //ei tarvii
+  const alue = Object.values(data.dimension.Alue);
   const luku = data.value;
 
-  let submitBtn = document.getElementById("submit-data");
-
-  submitBtn.addEventListener("click", function () {
-    let mun = document.getElementById("input-area").value;
-  });
-
-  //ei muuta väriä ollenkaan
-  const charData = {
+  charData = {
     labels: years,
-    datasets: [{ values: luku.reverse() }]
+    datasets: [{ name: Object.keys(alue[1].index)[0], values: luku}]
   };
+
+  }
+
 
   const chart = new Chart("#chart", {
     title: "My Chart",
     data: charData,
     type: "line",
     colors: ["#eb5146"],
-    high: 450,
+    high: 450
   });
 };
 
-buildChart();
+let clicked = "false";
+let kunta = "";
+
+buildChart(clicked, kunta);
+
+let submitBtn = document.getElementById("submit-data");
+//discussion with Kirveskoski
+submitBtn.addEventListener("click", function () {
+  kunta = document.getElementById("input-area").value;
+  clicked = "true";
+  buildChart(clicked, kunta);
+});
