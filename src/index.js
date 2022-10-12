@@ -97,7 +97,7 @@ const buildChart = async (check, kunta) => {
 
 let clicked = "false";
 let kunta = "";
-let submitBtn = document.getElementById("submit-data");
+const submitBtn = document.getElementById("submit-data");
 
 buildChart(clicked, kunta);
 
