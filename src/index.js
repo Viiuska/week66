@@ -1,7 +1,7 @@
 //https://www.youtube.com/watch?v=sYGreL-lxkg
 //https://moodle.lut.fi/mod/page/view.php?id=701261
 import { Chart } from "frappe-charts/dist/frappe-charts.esm.js";
-
+const submitBtn = document.getElementById("submit-data");
 const query = {
   query: [
     {
@@ -97,7 +97,7 @@ const buildChart = async (check, kunta) => {
 
 let clicked = "false";
 let kunta = "";
-const submitBtn = document.getElementById("submit-data");
+//const submitBtn = document.getElementById("submit-data");
 
 buildChart(clicked, kunta);
 
