@@ -97,13 +97,14 @@ const buildChart = async (check, kunta) => {
 
 let clicked = "false";
 let kunta = "";
+let submitBtn = document.getElementById("submit-data");
 
 buildChart(clicked, kunta);
 
-let submitBtn = document.getElementById("submit-data");
+
 //discussion with Kirveskoski
-/*submitBtn.addEventListener("click", function () {
-  kunta = document.getElementById("input-area").value;
+submitBtn.addEventListener("click", function () {
+  /*kunta = document.getElementById("input-area").value;
   clicked = "true";
-  buildChart(clicked, kunta);
-});*/
+  buildChart(clicked, kunta);*/
+});
