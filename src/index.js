@@ -72,7 +72,7 @@ const getData = async () => {
 
 const buildChart = async (check, kunta) => {
   let charData = {};
-  if (check === "false") {
+ 
   const data = await getData();
   const years = Object.values(data.dimension.Vuosi.category.label);
   const alue = Object.values(data.dimension.Alue);
@@ -83,7 +83,7 @@ const buildChart = async (check, kunta) => {
     datasets: [{ name: Object.keys(alue[1].index)[0], values: luku}]
   };
 
-  }
+  
 
 
   const chart = new Chart("#chart", {
