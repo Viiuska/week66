@@ -71,40 +71,66 @@ const getData = async () => {
 };
 
 const buildChart = async (check, kunta) => {
-  let charData = {};
- 
   const data = await getData();
-  const years = Object.values(data.dimension.Vuosi.category.label);
+  let years = Object.values(data.dimension.Vuosi.category.label);
   const alue = Object.values(data.dimension.Alue);
   const luku = data.value;
 
-  charData = {
+  if (check === "true") {
+    const url =
+      "https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px";
+    const res = await fetch(url, {
+      method: "GET"
+    });
+    const dataCode = await res.json();
+    const dataC = await getData();
+    let years = Object.values(dataC.dimension.Vuosi.category.label);
+
+    let muniCode = Object.values(dataCode.variables[1]);
+    let infoCode = muniCode[2]; //antaa koodi jono, infoCode[2] paikka
+
+    let muniName = Object.values(dataCode.variables[1]);
+    let infoName = muniName[3]; //antaa nimi jonon,infoName[2] paikka
+
+    let i = 0;
+    for (let n = 0; n < 310; n++) {
+      if (kunta.toLowerCase() !== infoName[n].toLowerCase()) {
+        i++;
+      } else {
+        const aluecode = infoCode[i];
+        query.query[1].selection.values[0] = aluecode;
+
+        const data = await getData();
+        const luku = data.value;
+        break;
+      }
+    }
+  }
+
+  let charData = {
     labels: years,
-    datasets: [{ name: Object.keys(alue[1].index)[0], values: luku}]
+    datasets: [{ values: luku }]
   };
 
-  
-
-
   const chart = new Chart("#chart", {
-    title: "My Chart",
+    title: "Finnish municipalities",
     data: charData,
     type: "line",
     colors: ["#eb5146"],
-    heigh: 450
+    height: 450
   });
 };
 
 let clicked = "false";
 let kunta = "";
+
 const submitBtn = document.getElementById("submit-data");
+//discussion with Kirveskoski
+submitBtn.addEventListener("click", function (event) {
+  kunta = document.getElementById("input-area").value;
+  clicked = "true";
+  buildChart(clicked, kunta);
+  event.preventDefault();
+});
 
 buildChart(clicked, kunta);
-
-
-//discussion with Kirveskoski
-//submitBtn.addEventListener("click", function () {
-  /*kunta = document.getElementById("input-area").value;
-  clicked = "true";
-  buildChart(clicked, kunta);*/
-//});
