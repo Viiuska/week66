@@ -72,37 +72,24 @@ const getData = async () => {
 
 const buildChart = async (check, kunta) => {
   if (check === "true") {
-    const url =
-      "https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px";
-    const res = await fetch(url, {
-      method: "GET"
-    });
-    const dataCode = await res.json();
-
-    const dataC = await getData();
-    //let years = Object.values(dataC.dimension.Vuosi.category.label);
+    const dataCode = await getMuni();
 
     let muniCode = Object.values(dataCode.variables[1])[2];
-    //let infoCode = muniCode[2]; //antaa koodi jono, infoCode[2] paikka
-
     let muniName = Object.values(dataCode.variables[1])[3];
-   //console.log(Object.values(dataCode.variables[1])[3])
-    //let infoName = muniName[3]; //antaa nimi jonon,infoName[2] paikka
 
-    let area = "";
+    let area;
     for (let n = 0; n < 310; n++) {
       if (kunta.toLowerCase() === muniName[n].toLowerCase()) {
         area = muniCode[n]
         kunta = muniName[n]
       }
     }
-
     query.query[1].selection.values[0] = area;
   }
+
   const data = await getData();
   let years = Object.values(data.dimension.Vuosi.category.label);
-  //const alue = Object.values(data.dimension.Alue);
-  const luku = data.value;
+  const luku = Object.values(data.value);
 
   let charData = {
     labels: years,
@@ -117,6 +104,19 @@ const buildChart = async (check, kunta) => {
     height: 450
   });
 };
+
+async function getMuni(){
+  const url =
+      "https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px";
+    const res = await fetch(url, {
+      method: "GET"
+    });
+    if (!res.ok) {
+      return;
+    }
+    const data = await res.json();
+    return data;
+}
 
 let clicked = "false";
 let kunta = "";
